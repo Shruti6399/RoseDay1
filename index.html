@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Rose Day 🌹</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: url('rose.jpeg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Falling petals */
+    .petal {
+      position: fixed;
+      top: -10%;
+      font-size: 1.2rem;
+      animation: fall linear infinite;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+      }
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.55);
+      padding: 40px 30px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 750px;
+      z-index: 2;
+      animation: fadeIn 2s ease;
+    }
+
+    .line {
+      font-size: 1.3rem;
+      margin: 15px 0;
+      opacity: 0;
+      animation: textFade 1.5s forwards;
+    }
+
+    .line:nth-child(1) { animation-delay: 0.5s; }
+    .line:nth-child(2) { animation-delay: 2s; }
+    .line:nth-child(3) { animation-delay: 3.5s; }
+    .line:nth-child(4) { animation-delay: 5s; }
+
+    .typing {
+      font-size: 1.8rem;
+      margin-top: 20px;
+      font-weight: bold;
+      border-right: 2px solid #fff;
+      display: inline-block;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .rose-box {
+      display: none;
+      margin-top: 30px;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .rose {
+      font-size: 5rem;
+      cursor: pointer;
+      animation: pulse 1.5s infinite;
+    }
+
+    .hint {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    /* Curtain popup */
+    .popup {
+      position: fixed;
+      inset: 0;
+      display: none;
+      z-index: 10;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .curtain {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, #8b0000, #ff0000);
+      z-index: 11;
+    }
+
+    .left { left: 0; }
+    .right { right: 0; }
+
+    .popup.open .left {
+      animation: openLeft 1.5s forwards;
+    }
+
+    .popup.open .right {
+      animation: openRight 1.5s forwards;
+    }
+
+    .popup img {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      max-width: 85%;
+      max-height: 85%;
+      border-radius: 20px;
+      opacity: 0;
+      animation: imageFade 1s forwards 1.5s;
+      z-index: 10;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 2rem;
+      cursor: pointer;
+      z-index: 12;
+      color: #fff;
+    }
+
+    @keyframes openLeft {
+      to { transform: translateX(-100%); }
+    }
+
+    @keyframes openRight {
+      to { transform: translateX(100%); }
+    }
+
+    @keyframes imageFade {
+      to { opacity: 1; }
+    }
+
+    @keyframes textFade { to { opacity: 1; } }
+    @keyframes pulse { 0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  </style>
+</head>
+<body>
+
+  <!-- Petals -->
+  <script>
+    for (let i = 0; i < 25; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.innerText = '🌸';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDuration = 6 + Math.random() * 6 + 's';
+      document.body.appendChild(petal);
+    }
+  </script>
+
+  <div class="overlay">
+    <div class="line">Every day is rose day when you marry the right person 🌹</div>
+    <div class="line">Marrying you is my life's biggest lesson 😜</div>
+    <div class="line">One year of rectifying you and still there are many correction 😉</div>
+    <div class="line">Even with all the thorns you have, you are my ideal connection ❤️</div>
+
+    <div class="typing" id="typing"></div>
+
+    <div class="rose-box" id="roseBox">
+      <div class="rose" onclick="openPopup()">🌹</div>
+      <div class="hint">Click on the rose</div>
+    </div>
+  </div>
+
+  <div class="popup" id="popup">
+    <div class="curtain left"></div>
+    <div class="curtain right"></div>
+    <div class="close" onclick="closePopup()">×</div>
+    <img src="gulabo.jpeg" alt="Love" />
+  </div>
+
+  <script>
+    // Typing animation
+    const text = 'Happy Rose Day, My Gulabo ❤️';
+    let index = 0;
+    function typeText() {
+      if (index < text.length) {
+        document.getElementById('typing').innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeText, 120);
+      }
+    }
+    setTimeout(typeText, 6500);
+
+    // Show rose
+    setTimeout(() => {
+      document.getElementById('roseBox').style.display = 'flex';
+    }, 9000);
+
+    function openPopup() {
+      const popup = document.getElementById('popup');
+      popup.style.display = 'block';
+      popup.classList.add('open');
+    }
+
+    function closePopup() {
+      const popup = document.getElementById('popup');
+      popup.style.display = 'none';
+      popup.classList.remove('open');
+    }
+  </script>
+</body>
+</html>
